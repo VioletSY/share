@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title th:text="${sysname}"></title>
+<link rel="stylesheet" th:href="@{/plugin/layui/css/layui.css}">
+</head>
+<body>
+	<script th:src="@{/plugin/layui/layui.js}"></script>
+	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+ 
+<script type="text/html" id="topToolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">添加文章</button>
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+  </div>
+</script>
+ 
+<script type="text/html" id=toolBar>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+              
+          
+<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
+ 
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+  
+  table.render({
+    elem: '#articleList'
+    ,url:'/user/getUserList'
+    ,toolbar: '#topToolbar' //开启头部工具栏，并为其绑定左侧模板
+    ,defaultToolbar: ['filter', 'exports', 'print']
+    ,title: '文章列表'
+    ,height: 'full-20'
+    ,cols: [[
+      {type: 'checkbox', fixed: 'left'}
+      ,{field:'userNumber', title:'标题', fixed: 'left', unresize: true, sort: true}
+      ,{field:'userName', title:'发布时间',align:'center',  edit: 'text', sort: true}
+      ,{field:'tel', title:'发布状态',align:'center',  edit: 'text', sort: true}
+      ,{field:'sex', title:'评论数', edit: 'text', sort: true}
+      ,{field:'headImage', title:'阅读数', sort: true}
+      ,{fixed: 'right', title:'操作', align:'center',width:150,toolbar: '#toolBar'}
+    ]]
+    ,page: true
+  });
+  
+  //头工具栏事件
+  table.on('toolbar(articleList)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id);
+    switch(obj.event){
+      case 'getCheckData':
+        var data = checkStatus.data;
+        layer.alert(JSON.stringify(data));
+      break;
+      case 'getCheckLength':
+        var data = checkStatus.data;
+        layer.msg('选中了：'+ data.length + ' 个');
+      break;
+      case 'isAll':
+        layer.msg(checkStatus.isAll ? '全选': '未全选');
+      break;
+      
+    };
+  });
+  
+  //监听行工具事件
+  table.on('tool(articleList)', function(obj){
+    var data = obj.data;
+    //console.log(obj)
+    if(obj.event === 'del'){
+      layer.confirm('真的删除行么', function(index){
+        obj.del();
+        layer.close(index);
+      });
+    } else if(obj.event === 'edit'){
+      layer.prompt({
+        formType: 2
+        ,value: data.email
+      }, function(value, index){
+        obj.update({
+          email: value
+        });
+        layer.close(index);
+      });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
