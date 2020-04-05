@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class User {
 	private String userName;
-	private String userNumber;
+	private String num;
 	private String id;
 	private String tel;
 	private String sex;
@@ -26,14 +26,6 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 		this.roles = roles;
-	}
-
-	public String getUserNumber() {
-		return userNumber;
-	}
-
-	public void setUserNumber(String userNumber) {
-		this.userNumber = userNumber;
 	}
 
 	public String getTel() {
@@ -106,6 +98,14 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getNum() {
+		return num;
+	}
+
+	public void setNum(String num) {
+		this.num = num;
 	}
 
 }

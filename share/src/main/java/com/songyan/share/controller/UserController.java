@@ -39,5 +39,14 @@ public class UserController {
 		return new ReturnObj(service.getList(page,limit),service.getListCount(page,limit),0);
 	}
 	
+	/**
+	 * 获取详细数据
+	 * @return
+	 */
+	@RequestMapping("get")
+	@ResponseBody
+	public ReturnObj get(String id) {
+		return new ReturnObj(service.get(id));
+	}
 	
 }

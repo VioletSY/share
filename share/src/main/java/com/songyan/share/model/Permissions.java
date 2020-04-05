@@ -7,12 +7,14 @@ package com.songyan.share.model;
  */
 public class Permissions {
 	private String id;
-	private String permissionsName;
+	private String name;
+	private String code;
+	private int num;
 	public Permissions() {
 	}
-	public Permissions(String id, String permissionsName) {
+	public Permissions(String id, String name) {
 		this.id = id;
-		this.permissionsName = permissionsName;
+		this.name = name;
 	}
 	public String getId() {
 		return id;
@@ -20,11 +22,23 @@ public class Permissions {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getPermissionsName() {
-		return permissionsName;
+	public String getName() {
+		return name;
 	}
-	public void setPermissionsName(String permissionsName) {
-		this.permissionsName = permissionsName;
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
 	}
 	
 }

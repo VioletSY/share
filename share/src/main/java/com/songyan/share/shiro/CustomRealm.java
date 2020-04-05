@@ -12,6 +12,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -34,10 +35,10 @@ public class CustomRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         for (Role role : user.getRoles()) {
             //添加角色
-            simpleAuthorizationInfo.addRole(role.getRoleName());
+            simpleAuthorizationInfo.addRole(role.getName());
             //添加权限
             for (Permissions permissions : role.getPermissions()) {
-                simpleAuthorizationInfo.addStringPermission(permissions.getPermissionsName());
+                simpleAuthorizationInfo.addStringPermission(permissions.getName());
             }
         }
         return simpleAuthorizationInfo;
@@ -55,10 +56,16 @@ public class CustomRealm extends AuthorizingRealm {
         if (user == null) {
             //这里返回后会报出对应异常
             return null;
-        } else {
-            //这里验证authenticationToken和simpleAuthenticationInfo的信息
-            SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(name, user.getPassword().toString(), getName());
-            return simpleAuthenticationInfo;
-        }
+        } 
+        //自定义盐值
+        ByteSource salt = ByteSource.Util.bytes(user.getUserName());
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                user,//安全数据
+                user.getPassword(),//密码
+                salt,
+                getName()
+        );
+        return authenticationInfo;
     }
+    
 }

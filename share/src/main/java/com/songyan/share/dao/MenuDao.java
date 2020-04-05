@@ -17,7 +17,7 @@ public interface MenuDao {
 	*/  
 	@Select( "SELECT MKBH AS MGID,MKMC AS MNAME,coalesce(ICON,'icon-cogs') AS MCLASS,URL AS MURL, "
 			+ " (CASE WHEN LENGTH(MKBH)=2 THEN '0' ELSE SUBSTR(MKBH,1,LENGTH(MKBH)-2) END) MPARENT "
-			+ " FROM KZT_SYS_MKB"
+			+ " FROM SYS_MKB"
 			+ " WHERE LENGTH(MKBH)=2 ORDER BY XH,MKBH")
 	public List<Map<String, Object>> getYjcdList();
 	
@@ -26,7 +26,7 @@ public interface MenuDao {
 	*/  
 	@Select( "SELECT MKBH AS MGID,MKMC AS MNAME,coalesce(ICON,'icon-cogs') AS MCLASS,URL AS MURL, "
 			+ " (CASE WHEN LENGTH(MKBH)=2 THEN '0' ELSE SUBSTR(MKBH,1,LENGTH(MKBH)-2) END) MPARENT "
-			+ " FROM KZT_SYS_MKB T WHERE LENGTH(MKBH)=4 AND SUBSTR(MKBH,1,2)=#{0} ORDER BY XH,MKBH  ")
+			+ " FROM SYS_MKB T WHERE LENGTH(MKBH)=4 AND SUBSTR(MKBH,1,2)=#{0} ORDER BY XH,MKBH  ")
 	public List<Map<String, Object>> getEjcdList(String mkbh);
 	
 	/**  
@@ -34,7 +34,7 @@ public interface MenuDao {
 	*/  
 	@Select( "SELECT MKBH AS MGID,MKMC AS MNAME,coalesce(ICON,'icon-cogs') AS MCLASS,URL AS MURL, "
 			+ " (CASE WHEN LENGTH(MKBH)=2 THEN '0' ELSE SUBSTR(MKBH,1,LENGTH(MKBH)-2) END) MPARENT "
-			+ " FROM KZT_SYS_MKB"
+			+ " FROM SYS_MKB"
 			+ " WHERE LENGTH(MKBH)=6 AND SUBSTR(MKBH,1,4)=#{0} ORDER BY XH,MKBH  ")
 	public List<Map<String, Object>> getSjcdList(String mkbh);
 	

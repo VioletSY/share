@@ -1,5 +1,6 @@
 package com.songyan.share.shiro;
 
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -8,11 +9,8 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.servlet.Filter;
 
 /** 
 * @author songyan
@@ -21,7 +19,6 @@ import javax.servlet.Filter;
 */
 @Configuration
 public class ShiroConfig {
-    //不加这个注解不生效，具体不详
     @Bean
     @ConditionalOnMissingBean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
@@ -30,14 +27,22 @@ public class ShiroConfig {
         return defaultAAP;
     }
 
-    //将自己的验证方式加入容器
+    /**
+     * 自己的验证方式加入容器
+     * @return
+     */
     @Bean
     public CustomRealm myShiroRealm() {
         CustomRealm customRealm = new CustomRealm();
+      //注入密码加密
+        customRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return customRealm;
     }
 
-    //权限管理，配置主要是Realm的管理认证
+    /**
+     * 权限管理，配置主要是Realm的管理认证
+     * @return
+     */
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
@@ -67,11 +72,23 @@ public class ShiroConfig {
 		return shiroFilterFactoryBean;
 	}
 
-    //加入注解的使用，不加入这个注解不生效
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
+    
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        //指定加密方式
+        hashedCredentialsMatcher.setHashAlgorithmName("MD5");
+        //加密次数
+        hashedCredentialsMatcher.setHashIterations(1024);
+        //此处的设置，true加密用的hex编码，false用的base64编码
+        hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);
+        return hashedCredentialsMatcher;
+    }
+
 }

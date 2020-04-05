@@ -9,16 +9,34 @@ import java.util.Set;
  */
 public class Role {
 	private String id;
-	private String roleName;
+	private String name;
+	private String code;
+	private int num;
 	private Set<Permissions> permissions;
-
-	public Role(String id, String roleName, Set<Permissions> permissions) {
+	
+	public Role(String id, String name, Set<Permissions> permissions) {
 		this.id = id;
-		this.roleName = roleName;
+		this.name = name;
 		this.permissions = permissions;
 	}
 
 	public Role() {
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public void setNum(int num) {
+		this.num = num;
 	}
 
 	public String getId() {
@@ -29,12 +47,12 @@ public class Role {
 		this.id = id;
 	}
 
-	public String getRoleName() {
-		return roleName;
+	public String getName() {
+		return name;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Set<Permissions> getPermissions() {

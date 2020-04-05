@@ -25,7 +25,8 @@ public class UserService {
 	 * @return
 	 */
 	public List<User> getList(int page,int limit) {
-		return dao.getList(PageDataUtil.getStart(page, limit),limit);
+		List<User> userList = dao.getList(PageDataUtil.getStart(page, limit),limit); 
+		return userList;
 	}
 
 	/**
@@ -34,6 +35,10 @@ public class UserService {
 	 */
 	public int getListCount(int page,int limit) {
 		return dao.getListCount();
+	}
+
+	public User get(String id) {
+		return dao.get(id);
 	}
 
 }
