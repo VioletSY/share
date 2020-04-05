@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>登录</title>
+<link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body>
+	<div class="top">考勤通&nbsp;·&nbsp;用数据改变未来</div>
+	<div class="content">
+		<div class="login">
+			<form class="layui-form zyl_pad_01" action="">
+				<div class="title">考勤通登录</div>
+				<div class="layui-form-item line">
+					<img class="smallImg" th:src="@{/img/login/icon1.png}" /> <input
+						type="text" name="userName" lay-verify="userName"
+						autocomplete="off" placeholder="请输入账号" class="layui-input">
+				</div>
+				<div class="layui-form-item line">
+					<img class="smallImg" th:src="@{/img/login/icon2.png}" />
+					<input
+						type="password" name="password" lay-verify="pass"
+						autocomplete="off" placeholder="请输入密码" class="layui-input" >
+				</div>
+				<div class="layui-col-sm12 layui-col-md12">
+					<button class="layui-btn layui-btn-fluid logBut" lay-submit=""
+						lay-filter="demo1">立即登录</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/js/ajax-util.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/plugin/layui/layui.js}"></script>
+	<script type="text/javascript" th:src="@{/js/assembly/jqarticle/jparticle.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/assembly/zylVerificationCode/zylVerificationCode.js}"></script> 
+	<script th:inline="javascript">
+	var contextPath =[[@{/}]],getData=getData;
+		layui.use([ 'carousel', 'form' ], function() {
+			var carousel = layui.carousel, form = layui.form;
+			//自定义验证规则
+			form.verify({
+				userName : function(value) {
+					if (value.length < 1) {
+						return '用户名不能为空';
+					}
+				},
+				pass :  function(value) {
+					if (value.length < 1) {
+						return '密码不能为空';
+					}
+				},
+				vercodes : function(value) {
+					//获取验证码
+					var zylCode = $(".zylVerCode").html();
+					if (value != zylCode) {
+						zylVerCode();
+						return '验证码错误（区分大小写）';
+					}
+				},
+				content : function(value) {
+					layedit.sync(editIndex);
+				}
+			});
+
+			//监听提交
+			form.on('submit(demo1)', function(data) {
+				getData(JSON.stringify(data.field), contextPath + "doLogin", function(val) {
+					var code = val.code;
+					if(code == 200){
+						window.location.href = contextPath+"main";
+					}else{
+						layer.alert(val.data, {
+							title : '错误提示'
+						})
+					}
+				},'application/json');
+				return false;
+			});
+
+			//设置轮播主体高度
+			var zyl_login_height = $(window).height() / 1.05;
+			var zyl_car_height = $(".zyl_login_height").css("cssText",
+					"height:" + zyl_login_height + "px!important");
+		});
+	</script>
+</body>
+</html>
