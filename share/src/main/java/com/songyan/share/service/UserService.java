@@ -37,6 +37,11 @@ public class UserService {
 		return dao.getListCount();
 	}
 
+	/**
+	 * 获取用户详情
+	 * @param id
+	 * @return
+	 */
 	public User get(String id) {
 		return dao.get(id);
 	}

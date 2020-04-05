@@ -6,5 +6,5 @@ package com.songyan.share.info;
 * @desc: 系统信息
 */
 public class SystemInfo {
-	public static String appName = "知识共享平台";
+	public static String appName = "猿区";
 }
