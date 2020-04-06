@@ -22,20 +22,36 @@ import com.songyan.share.model.User;
 public interface UserDao {
 
 	/**
-	 * 检索列表
+	 * 检索普通用户列表
 	 * @param start
 	 * @param limit
 	 * @return
 	 */
-	@Select("select id,username,name,num,sex,tel,headimage from sys_user limit #{start},#{limit}")
-	List<User> getList(@Param("start") int start, @Param("limit") int limit);
+	@Select("select a.id,a.username,a.name,a.num,a.sex,a.tel,a.headimage,a.create_time createTime from sys_user a LEFT JOIN sys_link_user_role b ON a.id = b.user_id LEFT JOIN sys_role c ON b.role_id = c.id where c.code ='user' order by a.update_time desc   limit #{start},#{limit}")
+	List<User> getUserList(@Param("start") int start, @Param("limit") int limit);
 
 	/**
-	 * 检索符合条件的用户数量
+	 * 检索管理员列表
+	 * @param start
+	 * @param limit
 	 * @return
 	 */
-	@Select("select count(1) from sys_user")
-	int getListCount();
+	@Select("select a.id,a.username,a.name,a.num,a.sex,a.tel,a.headimage,a.create_time createTime from sys_user a LEFT JOIN sys_link_user_role b ON a.id = b.user_id LEFT JOIN sys_role c ON b.role_id = c.id where c.code ='admin' order by a.update_time desc   limit #{start},#{limit}")
+	List<User> getManagerList(int start, int limit);
+	
+	/**
+	 * 检索符合条件的普通用户数量
+	 * @return
+	 */
+	@Select("select count(1) from sys_user a LEFT JOIN sys_link_user_role b ON a.id = b.user_id LEFT JOIN sys_role c ON b.role_id = c.id where c.code ='user'")
+	int getUserListCount();
+	
+	/**
+	 * 检索符合条件的管理员数量
+	 * @return
+	 */
+	@Select("select count(1) from sys_user a LEFT JOIN sys_link_user_role b ON a.id = b.user_id LEFT JOIN sys_role c ON b.role_id = c.id where c.code ='admin' ")
+	int getManagerListCount();
 
 	/**
 	 * 获取用户的详细信息

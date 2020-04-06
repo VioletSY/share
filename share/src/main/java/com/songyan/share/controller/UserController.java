@@ -30,6 +30,15 @@ public class UserController {
 	}
 	
 	/**
+	 * 添加新用户
+	 * @return
+	 */
+	@RequestMapping("addUser")
+	public String addUser(){
+		return "user/addUser";
+	}
+	
+	/**
 	 * 获取用户列表数据
 	 * @return
 	 */

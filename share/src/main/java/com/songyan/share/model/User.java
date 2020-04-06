@@ -1,5 +1,7 @@
 package com.songyan.share.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -16,6 +18,9 @@ public class User {
 	private String headImage;
 	private String password;
 	private String name;
+	private Date createTime;
+	private Date updateTime;
+	private String createTimeStr;
 	private Set<Role> roles;
 
 	public User() {
@@ -26,6 +31,34 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 		this.roles = roles;
+	}
+	
+	public String getCreateTimeStr() {
+		if(this.createTime !=null){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			createTimeStr = sdf.format(createTime) ;
+		}
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
 	public String getTel() {
