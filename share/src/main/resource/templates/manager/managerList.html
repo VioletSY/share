@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title th:text="${sysname}"></title>
+<link rel="stylesheet" th:href="@{/plugin/layui/css/layui.css}">
+<link rel="stylesheet" th:href="@{/css/common.css}">
+</head>
+<body>
+	<div class="searchBlock" >
+	  <div class="layui-inline">
+	    <input class="layui-input searchText" name="searchText" autocomplete="off">
+	  </div>
+	  <button class="layui-btn layui-btn-sm searchText" data-type="reload">
+	  	<i class="layui-icon layui-icon-search"></i>
+	 </button>
+	</div>
+	<table class="layui-hide" id="userList" lay-filter="userList"></table>
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="addUser">
+		<i class="layui-icon layui-icon-add-circle"></i> 
+		新管理
+	</button>
+  </div>
+</script>
+<script type="text/html" id="bar">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script th:src="@{/plugin/layui/layui.js}"></script>
+<script th:src="@{/js/app/userList.js}"></script> 
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+  
+  table.render({
+    elem: '#userList'
+    ,url:'/user/getUserList'
+    ,toolbar: '#toolbar' //开启头部工具栏，并为其绑定左侧模板
+    ,defaultToolbar: ['filter', 'exports', 'print']
+    ,title: '管理员数据表'
+    ,height: 'full-50'
+    ,cols: [[
+      {type: 'checkbox', fixed: 'left'}
+      ,{field:'headImage',align:'center',width:100, title:'头像',templet:handleHeadImage}
+      ,{field:'userName', title:'用户名',  edit: 'text'}
+      ,{field:'name', title:'姓名',  edit: 'text'}
+      ,{field:'tel', title:'手机号',  edit: 'text'} 
+      ,{field:'sex', title:'性别' ,align:'center',width:100, edit: 'text', sort: true,templet:handleSex}
+      ,{field:'createTimeStr',align:'center',width:200, title:'加入时间'}
+      ,{fixed: 'right', title:'操作',align:'center',width:150, toolbar: '#bar'}
+    ]]
+  	,id: 'userList'
+    ,page: true
+  });
+  
+  //头工具栏事件
+  table.on('toolbar(userList)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id);
+    switch(obj.event){
+      case 'addUser':
+        addUser();
+      break;
+    };
+  });
+  
+  //监听行工具事件
+  table.on('tool(userList)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'del'){
+      layer.confirm('真的删除行么', function(index){
+    	  obj.del();
+        layer.close(index);
+      });
+    } else if(obj.event === 'edit'){
+    	 addUser();
+    }
+  });
+  
+  var $ = layui.$, active = {
+    reload: function(){
+      table.reload('userList', {
+        page: {
+          curr: 1 //重新从第 1 页开始
+        }
+        ,where: {
+          key: {
+        	  searchText: $('.searchText').val()
+          }
+        }
+      }, 'data');
+    }
+  };
+  
+  $('.searchBlock .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+  
+});
+</script>
+</body>
+</html>

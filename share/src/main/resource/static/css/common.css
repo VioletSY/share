@@ -1,0 +1,16 @@
+.searchBlock .layui-input, .layui-textarea, .layui-select {height: 30px;line-height: 1;}
+.searchBlock{margin: 10px}
+.headImageInTable{width:30px;border-radius:15px}
+.top-tool{
+	position: fixed;
+    top: 0;
+    right: 10px;
+    width: 100%;
+    text-align: right;
+    padding-top: 5px;
+    padding-right: 5px;
+    background-color: white;
+    border-bottom: 1px solid #009688;
+}
+.form-top-tool{margin-top: 50px}
+.layui-input, .layui-textarea {width: 190px;}
